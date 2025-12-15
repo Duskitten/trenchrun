@@ -1,0 +1,61 @@
+[gd_scene load_steps=10 format=3 uid="uid://yp8ee5gvcb5m"]
+
+[ext_resource type="Shader" uid="uid://3t43midvs6qw" path="res://Shaders/Map1.gdshader" id="1_iufso"]
+[ext_resource type="Texture2D" uid="uid://bgr7lvvhvg4ty" path="res://Sprites/Map_1_Textures/Map1_Heightmap.png" id="2_8te53"]
+[ext_resource type="Texture2D" uid="uid://dsytjkxe62va2" path="res://Sprites/Map_1_Textures/Map1_Dirt.png" id="2_flcxr"]
+[ext_resource type="PackedScene" uid="uid://c1a2rdd83axf3" path="res://Scenes/Maps/Tankview.tscn" id="4_3chno"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_8te53"]
+size = Vector2(20, 20)
+subdivide_width = 300
+subdivide_depth = 300
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_flcxr"]
+render_priority = 0
+shader = ExtResource("1_iufso")
+shader_parameter/heightmap = ExtResource("2_8te53")
+shader_parameter/dirt_texture = ExtResource("2_flcxr")
+shader_parameter/uv_scale = 25.99
+shader_parameter/height_ratio = -1.375
+shader_parameter/height_depth = 2.75
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_flcxr"]
+ground_bottom_color = Color(0.042587817, 0.020166585, 0.014993884, 1)
+ground_horizon_color = Color(0.35574773, 0.24827975, 0.21420038, 1)
+
+[sub_resource type="Sky" id="Sky_3chno"]
+sky_material = SubResource("ProceduralSkyMaterial_flcxr")
+
+[sub_resource type="Environment" id="Environment_7mlwj"]
+background_mode = 2
+sky = SubResource("Sky_3chno")
+ambient_light_source = 2
+ambient_light_color = Color(0.1309478, 0.20274216, 0.37814617, 1)
+fog_enabled = true
+fog_light_color = Color(0.22457597, 0.24654794, 0.281702, 1)
+fog_light_energy = 1.25
+fog_sun_scatter = 0.05
+fog_density = 0.2555
+adjustment_enabled = true
+
+[node name="Map1" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_8te53")
+surface_material_override/0 = SubResource("ShaderMaterial_flcxr")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_7mlwj")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.37855166, -0.40452743, -0.8324999, 0, -0.8994358, 0.43705285, -0.92558014, -0.16544709, -0.34048292, -0.6043427, 0, 0)
+shadow_enabled = true
+directional_shadow_fade_start = 0.725
+directional_shadow_max_distance = 43.5
+directional_shadow_pancake_size = 58.4
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.9987097, -0.050784722, 0, 0.050784722, 0.9987097, 2.48509, 0.23344386, 8.909693)
+fov = 60.0
+
+[node name="Control" parent="." instance=ExtResource("4_3chno")]
